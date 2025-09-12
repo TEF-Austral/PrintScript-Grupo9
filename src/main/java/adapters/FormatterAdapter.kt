@@ -1,6 +1,5 @@
 package adapters
 
-import formatter.FormatterService
 import interpreter.PrintScriptFormatter
 import java.io.InputStream
 import java.io.Writer
@@ -12,8 +11,6 @@ class FormatterAdapter: PrintScriptFormatter {
         config: InputStream,
         writer: Writer
     ) {
-        FormatterService().formatToWriter()
+        TODO("Not yet implemented")
     }
-
-    private fun getParser():
 }

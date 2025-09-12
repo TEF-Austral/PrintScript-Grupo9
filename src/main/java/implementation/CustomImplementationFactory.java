@@ -1,7 +1,7 @@
 package implementation;
 
-import adapters.CLIAdapter;
 import adapters.FormatterAdapter;
+import adapters.InterpreterAdapter;
 import adapters.LinterAdapter;
 import interpreter.PrintScriptFormatter;
 import interpreter.PrintScriptInterpreter;
@@ -11,7 +11,7 @@ public class CustomImplementationFactory implements PrintScriptFactory {
 
     @Override
     public PrintScriptInterpreter interpreter() {
-        return new CLIAdapter();
+        return new InterpreterAdapter();
     }
 
     @Override
