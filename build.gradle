@@ -30,16 +30,16 @@ test {
 dependencies {
     testImplementation 'junit:junit:4.13.1'
 
-    implementation 'com.github.tef-austral:ast:1.1.6'
-    implementation 'com.github.tef-austral:token:1.1.6'
-    implementation 'com.github.tef-austral:common:1.1.6'
-    implementation 'com.github.tef-austral:reader:1.1.6'
-    implementation 'com.github.tef-austral:lexer:1.1.7'
-    implementation 'com.github.tef-austral:parser:1.1.6'
-    implementation 'com.github.tef-austral:interpreter:1.1.6'
-    implementation 'com.github.tef-austral:formatter:1.1.6'
-    implementation 'com.github.tef-austral:analyzer:1.1.6'
-    implementation 'com.github.tef-austral:cli:1.1.6'
+    implementation 'com.github.tef-austral:ast:1.1.8'
+    implementation 'com.github.tef-austral:token:1.1.8'
+    implementation 'com.github.tef-austral:common:1.1.8'
+    implementation 'com.github.tef-austral:reader:1.1.8'
+    implementation 'com.github.tef-austral:lexer:1.1.10'
+    implementation 'com.github.tef-austral:parser:1.1.10'
+    implementation 'com.github.tef-austral:interpreter:1.1.8'
+    implementation 'com.github.tef-austral:formatter:1.1.8'
+    implementation 'com.github.tef-austral:analyzer:1.1.8'
+    implementation 'com.github.tef-austral:cli:1.1.8'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 

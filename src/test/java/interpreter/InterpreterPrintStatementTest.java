@@ -34,6 +34,7 @@ public class InterpreterPrintStatementTest {
     @Parameterized.Parameters(name = "version {0} - {1})")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
+                {"1.1", "read-input"},
                 {"1.0", "arithmetic-operations"},
                 {"1.0", "arithmetic-operations-decimal"},
                 {"1.0", "simple-declare-assign"},
@@ -46,7 +47,7 @@ public class InterpreterPrintStatementTest {
                 {"1.1", "if-statement-false"},
                 {"1.1", "else-statement-true"},
                 {"1.1", "else-statement-false"},
-                {"1.1", "read-input"},
+                //aca va el read input
                 {"1.1", "read-env"}
         });
     }

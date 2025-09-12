@@ -4,7 +4,7 @@ import emitter.Emitter
 import interpreter.PrintEmitter
 import result.InterpreterResult
 
-class PrintEmitterAdapter(val printEmitter: PrintEmitter): Emitter {
+class PrintEmitterAdapter(private val printEmitter: PrintEmitter): Emitter {
 
     override fun emit(value: InterpreterResult) {
         printEmitter.print(value.interpreter?.getValue().toString())
