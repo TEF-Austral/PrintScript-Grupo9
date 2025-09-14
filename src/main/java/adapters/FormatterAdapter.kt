@@ -20,9 +20,13 @@ class FormatterAdapter: PrintScriptFormatter {
     private fun parseConfigFromString(configText: String): FormatConfig {
         val entries = convert(configText)
 
-        val spaceAroundAssignment = entries["enforce-no-spacing-around-equals"]?.let {
-            !it.toBoolean()
-        } ?: true
+        val spaceAroundAssignment = when {
+            entries.containsKey("enforce-no-spacing-around-equals") ->
+                !entries["enforce-no-spacing-around-equals"]!!.toBoolean()
+            entries.containsKey("enforce-spacing-around-equals") ->
+                entries["enforce-spacing-around-equals"]!!.toBoolean()
+            else -> false
+        }
 
         val spaceAfterColon = entries["enforce-spacing-after-colon-in-declaration"]?.toBoolean() ?: false
 
@@ -30,7 +34,7 @@ class FormatterAdapter: PrintScriptFormatter {
 
         val blankLinesBeforePrintln = entries["line-breaks-after-println"]?.toIntOrNull() ?: 0
 
-        val indentSize = FormatConfig.DEFAULT_INDENT_SIZE
+        val indentSize = entries["indent-inside-if"]?.toIntOrNull() ?: FormatConfig.DEFAULT_INDENT_SIZE
 
         return FormatConfig(
             spaceBeforeColon = spaceBeforeColon,

@@ -17,7 +17,7 @@ class InterpreterAdapter : PrintScriptInterpreter {
         val interpreter = DefaultInterpreterFactory().createWithVersionAndEmitterAndInputProvider(convertVersion(version), PrintEmitterAdapter(emitter), InputProviderAdapter(provider, emitter))
         val result = interpreter.interpret(astStream)
         if (!result.interpretedCorrectly) {
-            handler.reportError(result.message)
+            handler.reportError("")
         }
     }
 }
