@@ -25,7 +25,7 @@ class FormatterAdapter: PrintScriptFormatter {
                 !entries["enforce-no-spacing-around-equals"]!!.toBoolean()
             entries.containsKey("enforce-spacing-around-equals") ->
                 entries["enforce-spacing-around-equals"]!!.toBoolean()
-            else -> false
+            else -> true
         }
 
         val spaceAfterColon = entries["enforce-spacing-after-colon-in-declaration"]?.toBoolean() ?: false
