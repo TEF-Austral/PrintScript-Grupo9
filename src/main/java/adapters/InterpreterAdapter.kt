@@ -14,11 +14,9 @@ class InterpreterAdapter : PrintScriptInterpreter {
 
     override fun execute(src: InputStream, version: String, emitter: PrintEmitter, handler: ErrorHandler, provider: InputProvider) {
         val astStream = ParserAstStream(parse(src, version))
-        val interpreter = DefaultInterpreterFactory().createWithVersionAndEmitterAndInputProvider(
-            convertVersion(version),
-            PrintEmitterAdapter(emitter),
-            InputProviderAdapter(provider, emitter)
-        )
+        val adaptedEmitter = PrintEmitterAdapter(emitter)
+        val adaptedInput =  InputProviderAdapter(provider, emitter)
+        val interpreter = DefaultInterpreterFactory().createWithVersionAndEmitterAndInputProvider(convertVersion(version), adaptedEmitter, adaptedInput)
         val result = interpreter.interpret(astStream)
         if (!result.interpretedCorrectly) {
             handler.reportError(result.message)

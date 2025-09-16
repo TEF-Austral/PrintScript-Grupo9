@@ -14,8 +14,9 @@ import java.io.BufferedReader
 
 object ParserAdapter {
     fun parse(src: InputStream, version: String): ParserInterface {
-        val lexer = DefaultLexerFactory(StringSplitterFactory, StringToTokenConverterFactory)
-            .createLexerWithVersion( convertVersion(version), BufferedReader(adaptInputStreamToReader(src)))
+        val reader = BufferedReader(adaptInputStreamToReader(src))
+        val lexerFactory = DefaultLexerFactory(StringSplitterFactory, StringToTokenConverterFactory)
+        val lexer = lexerFactory.createLexerWithVersion( convertVersion(version), reader)
         val tokens = LexerTokenStream(lexer)
         return DefaultParserFactory().createWithVersion(convertVersion(version), DefaultNodeBuilder(), tokens)
     }
