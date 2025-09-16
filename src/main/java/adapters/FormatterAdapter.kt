@@ -1,24 +1,28 @@
 package adapters
 
 import adapters.InputStreamToJson.convert
-import adapters.ParserAdapter.parse
+import adapters.InputStreamToReader.adaptInputStreamToReader
 import adapters.VersionAdapter.convertVersion
+import factory.DefaultLexerFactory
+import factory.StringSplitterFactory
+import factory.StringToTokenConverterFactory
+import formatter.FormatterImpl
 import formatter.config.FormatConfig
-import formatter.factory.FormatterFactory
-import formatter.rules.RuleId
 import interpreter.PrintScriptFormatter
+import stream.token.LexerTokenStream
+import java.io.BufferedReader
 import java.io.InputStream
 import java.io.Writer
-import kotlin.collections.containsKey
-import kotlin.text.get
 
 class FormatterAdapter : PrintScriptFormatter {
     override fun format(src: InputStream, version: String, config: InputStream, writer: Writer) {
-        val program = parse(src, version).parse().getProgram()
         val configText = config.bufferedReader().use { it.readText() }
         val formatConfig = parseConfigFromString(configText)
-        FormatterFactory.createWithVersion(convertVersion(version))
-            .formatToWriter(program, formatConfig, writer)
+        val reader = BufferedReader(adaptInputStreamToReader(src))
+        val lexerFactory = DefaultLexerFactory(StringSplitterFactory, StringToTokenConverterFactory)
+        val lexer = lexerFactory.createLexerWithVersion( convertVersion(version), reader)
+        val tokens = LexerTokenStream(lexer)
+        FormatterImpl().formatToWriter(tokens, formatConfig, writer)
     }
 
     private fun parseConfigFromString(configText: String): FormatConfig {
@@ -51,26 +55,25 @@ class FormatterAdapter : PrintScriptFormatter {
 
         val blankLinesAfterPrintlnStr = entries["line-breaks-after-println"]
         val blankLinesAfterPrintln = blankLinesAfterPrintlnStr?.toIntOrNull() ?: 0
-        val hasValidPrintlnRule = blankLinesAfterPrintlnStr?.toIntOrNull() != null
 
-        val indentSize: Int =
-            entries["indent-size"]?.toIntOrNull() ?: FormatConfig.DEFAULT_INDENT_SIZE
-
-        val ifIndentInside: Int =
-            entries["indent-inside-if"]?.toIntOrNull() ?: FormatConfig.DEFAULT_IF_INDENT_INSIDE
+        val indentSize: Int = entries["indent-inside-if"]?.toIntOrNull() ?: FormatConfig.DEFAULT_SIZE
 
         val ifBraceOnSameLine: Boolean? =
-            if (entries.containsKey("if-brace-on-same-line"))
-                entries["if-brace-on-same-line"]!!.toBoolean()
+            if (entries.containsKey("if-brace-below-line"))
+                !entries["if-brace-below-line"]!!.toBoolean()
             else null
 
-        val enabled = mutableSetOf<RuleId>()
-        if (spaceBeforeColon != null || spaceAfterColon != null) enabled += RuleId.Declaration
-        if (spaceAroundAssignment != null) enabled += RuleId.Assignment
-        if (hasValidPrintlnRule) enabled += RuleId.PrintStatement
-        if (entries.containsKey("indent-inside-if") || entries.containsKey("if-brace-on-same-line")) {
-            enabled += RuleId.IfStatement
-        }
+        val enforceSingleSpace: Boolean? =
+            if (entries.containsKey("mandatory-single-space-separation")) {
+                entries["mandatory-single-space-separation"]!!.toBoolean()
+            }
+            else null
+
+        val spaceAroundOperators: Boolean? =
+            if (entries.containsKey("mandatory-space-surrounding-operations")) {
+                entries["mandatory-space-surrounding-operations"]!!.toBoolean()
+            }
+            else null
 
         return FormatConfig(
             spaceBeforeColon = spaceBeforeColon,
@@ -79,8 +82,8 @@ class FormatterAdapter : PrintScriptFormatter {
             blankLinesAfterPrintln = blankLinesAfterPrintln,
             indentSize = indentSize,
             ifBraceOnSameLine = ifBraceOnSameLine,
-            ifIndentInside = ifIndentInside,
-            enabledRules = enabled
+            enforceSingleSpace = enforceSingleSpace,
+            spaceAroundOperators = spaceAroundOperators
         )
     }
 }
