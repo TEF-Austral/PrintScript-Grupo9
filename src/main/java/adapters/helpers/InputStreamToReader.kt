@@ -1,4 +1,4 @@
-package adapters
+package adapters.helpers
 
 import java.io.InputStream
 import java.io.InputStreamReader

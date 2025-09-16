@@ -1,8 +1,11 @@
-package adapters
+package adapters.helpers
+
+import java.io.InputStream
 
 object InputStreamToJson {
-    fun convert(configText: String): Map<String, String> {
-        return configText
+    fun convert(configText: InputStream): Map<String, String> {
+        val config = configText.bufferedReader().use { it.readText() }
+        val configToJson =  config
             .trim()
             .removePrefix("{")
             .removeSuffix("}")
@@ -10,5 +13,6 @@ object InputStreamToJson {
             .map { it.trim().split(':', limit = 2).map(String::trim) }
             .filter { it.size == 2 }
             .associate { it[0].removeSurrounding("\"") to it[1].removeSurrounding("\"") }
+        return configToJson
     }
 }

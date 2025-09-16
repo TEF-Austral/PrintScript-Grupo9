@@ -1,4 +1,4 @@
-package adapters
+package adapters.helpers
 
 import transformer.StringToPrintScriptVersion
 import type.Version
