@@ -7,7 +7,7 @@ import adapters.helpers.VersionAdapter.convertVersion
 import factory.DefaultLexerFactory
 import factory.StringSplitterFactory
 import factory.StringToTokenConverterFactory
-import formatter.FormatterImpl
+import formatter.factory.DefaultFormatterFactory.createFormatter
 import interpreter.PrintScriptFormatter
 import stream.token.LexerTokenStream
 import java.io.BufferedReader
@@ -20,6 +20,7 @@ class FormatterAdapter : PrintScriptFormatter {
         val lexerFactory = DefaultLexerFactory(StringSplitterFactory, StringToTokenConverterFactory)
         val lexer = lexerFactory.createLexerWithVersion( convertVersion(version), reader)
         val tokens = LexerTokenStream(lexer)
-        FormatterImpl().formatToWriter(tokens, parseConfigFromString(convert(config)), writer)
+        val formatter = createFormatter(convertVersion(version))
+        formatter.formatToWriter(tokens, parseConfigFromString(convert(config)), writer)
     }
 }

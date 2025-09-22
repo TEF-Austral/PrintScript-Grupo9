@@ -4,7 +4,7 @@ import adapters.helpers.ParserAdapter.parse
 import adapters.helpers.InputProviderAdapter
 import adapters.helpers.VersionAdapter.convertVersion
 import adapters.helpers.PrintEmitterAdapter
-import factory.DefaultInterpreterFactory
+import factory.DefaultInterpreterFactory.createWithVersionAndEmitterAndInputProvider
 import interpreter.ErrorHandler
 import interpreter.InputProvider
 import interpreter.PrintEmitter
@@ -18,7 +18,7 @@ class InterpreterAdapter : PrintScriptInterpreter {
         val astStream = ParserAstStream(parse(src, version))
         val adaptedEmitter = PrintEmitterAdapter(emitter)
         val adaptedInput = InputProviderAdapter(provider, emitter)
-        val interpreter = DefaultInterpreterFactory().createWithVersionAndEmitterAndInputProvider(convertVersion(version), adaptedEmitter, adaptedInput)
+        val interpreter = createWithVersionAndEmitterAndInputProvider(convertVersion(version), adaptedEmitter, adaptedInput)
         val result = interpreter.interpret(astStream)
         if (!result.interpretedCorrectly) {
             handler.reportError(result.message)

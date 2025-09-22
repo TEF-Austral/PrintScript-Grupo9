@@ -38,9 +38,9 @@ object StringToFormatConfig {
         val indentSize: Int = configMap["indent-inside-if"]?.toIntOrNull() ?: FormatConfig.DEFAULT_SIZE
 
         val ifBraceOnSameLine: Boolean? =
-            if (configMap.containsKey("if-brace-below-line"))
-                !configMap["if-brace-below-line"]!!.toBoolean()
-            else null
+            if (configMap.containsKey("if-brace-below-line")) !configMap["if-brace-below-line"]!!.toBoolean()
+            else if (configMap.containsKey("if-brace-same-line")) configMap["if-brace-same-line"]!!.toBoolean()
+            else true
 
         val enforceSingleSpace: Boolean? =
             if (configMap.containsKey("mandatory-single-space-separation")) {

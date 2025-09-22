@@ -1,8 +1,8 @@
 package adapters.helpers
 
 import adapters.helpers.InputStreamToJson.convert
+import checkers.IdentifierStyle
 import config.AnalyzerConfig
-import rules.IdentifierStyle
 import java.io.InputStream
 
 class ConfigToAnalyzerConfig {
@@ -30,21 +30,6 @@ class ConfigToAnalyzerConfig {
                 restrictPrintlnArgs = restrictPrintlnArgs,
                 restrictReadInputArgs = restrictReadInputArgs
             )
-        }
-
-        fun convertToTempConfigFile(analyzerConfig: AnalyzerConfig): java.io.File {
-            return java.io.File.createTempFile("analyzer", ".json").apply {
-                writeText(
-                    """
-                    {
-                      "identifierStyle":"${analyzerConfig.identifierStyle}",
-                      "restrictPrintlnArgs":${analyzerConfig.restrictPrintlnArgs},
-                      "restrictReadInputArgs":${analyzerConfig.restrictReadInputArgs}
-                    }
-                    """.trimIndent(),
-                )
-                deleteOnExit()
-            }
         }
     }
 }

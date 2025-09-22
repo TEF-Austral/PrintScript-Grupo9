@@ -17,6 +17,6 @@ object ParserAdapter {
         val lexerFactory = DefaultLexerFactory(StringSplitterFactory, StringToTokenConverterFactory)
         val lexer = lexerFactory.createLexerWithVersion(VersionAdapter.convertVersion(version), reader)
         val tokens = LexerTokenStream(lexer)
-        return DefaultParserFactory().createWithVersion(VersionAdapter.convertVersion(version), DefaultNodeBuilder(), tokens)
+        return DefaultParserFactory.createWithVersion(VersionAdapter.convertVersion(version), DefaultNodeBuilder(), tokens)
     }
 }
